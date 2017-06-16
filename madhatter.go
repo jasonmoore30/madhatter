@@ -45,7 +45,7 @@ func New(constructors ...Constructor) Chain {
 // For proper middleware, this should cause no problems.
 //
 // Then() accepts and returns a httprouter.Handle instead of an http.Handler
-func (c Chain) Then(h httprouter.Handle) {
+func (c Chain) Then(h httprouter.Handle) httprouter.Handle {
 	if h == nil {
 		log.Println("Invalid Handle")
 	}
@@ -54,6 +54,7 @@ func (c Chain) Then(h httprouter.Handle) {
 		h = c.constructors[len(c.constructors)-1-i](h)
 	}
 
+	return h
 }
 
 // ThenFunc works identically to Then, but takes
